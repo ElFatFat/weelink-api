@@ -22,8 +22,8 @@ userSchema.methods.comparePassword = async function(password) {
 // Function to generate JWT
 userSchema.methods.generateJWT = function() {
   const payload = { id: this._id, email: this.email, isAdmin: this.isAdmin };
-  const secret = process.env.JWT_SECRET || 'your_jwt_secret'; // Use a secure secret key
-  const options = { expiresIn: '1h' }; // Token expiration time
+  const secret = process.env.JWT_SECRET;
+  const options = { expiresIn: '1h' };
   return jwt.sign(payload, secret, options);
 };
 
