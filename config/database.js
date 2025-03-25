@@ -17,7 +17,7 @@ class Database {
             logger.info('MongoDB URI: ' + this.URI_MONGODB);
         }
 
-        console.log('MongoDB URI: ' + this.URI_MONGODB);
+        console.error('MongoDB URI: ' + this.URI_MONGODB);
     }
 
 
