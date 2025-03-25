@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --env-file=.env ./bin/www  --delay 1500ms",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand NODE_ENV=test"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

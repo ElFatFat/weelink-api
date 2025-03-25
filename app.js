@@ -8,7 +8,7 @@ const database = require('./config/database');
 
 
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config('./.env');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');

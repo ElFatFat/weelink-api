@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
   profile_picture: { type: String, default: 'default.jpg' },
   isBanned: { type: Boolean, default: false },
   token: { type: String }, // Optional: Store the token if needed
-  refreshToken: { type: String } // Optional: Store the refresh token if needed
+  refreshToken: { type: String }, // Optional: Store the refresh token if needed
+  isGarageOwner: { type: Boolean, default: false }, // Optional: Flag to indicate if the user is a garage owner
+  garages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Garage' }],
 });
 
 // Function to compare passwords
