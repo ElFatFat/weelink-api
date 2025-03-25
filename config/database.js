@@ -16,8 +16,6 @@ class Database {
             logger.info('Using the test database ' + process.env.DB_NAME_TEST);
             logger.info('MongoDB URI: ' + this.URI_MONGODB);
         }
-
-        console.error('MongoDB URI: ' + this.URI_MONGODB);
     }
 
 

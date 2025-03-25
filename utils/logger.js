@@ -34,6 +34,9 @@ const logger = winston.createLogger({
     ],
 });
 
+logger.on('finish', () => process.exit(1));
+
+
 // Flush logs before exiting
 process.on('exit', () => {
     logger.end();
