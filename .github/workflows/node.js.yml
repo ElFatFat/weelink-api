@@ -26,5 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - name: Set environment variables
+      run: echo "NODE_ENV=test" >> $GITHUB_ENV
     - run: npm i
     - run: npm test
