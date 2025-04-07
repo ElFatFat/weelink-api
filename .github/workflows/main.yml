@@ -42,15 +42,22 @@ jobs:
           docker-compose build test
           docker-compose run --rm test
 
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
+      - name: Create logs directory for artifacts
         if: always()
+        run: |
+          mkdir -p logs-artifacts
+          # Copy logs if they exist
+          [ -d "logs" ] && cp -r logs/* logs-artifacts/ || echo "No logs directory found"
+          # Create placeholder file if directory is empty
+          [ "$(ls -A logs-artifacts 2>/dev/null)" ] || echo "No log files generated" > logs-artifacts/info.txt
+
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: |
-            coverage/
-            test-report/
-          retention-days: 7
+          name: test-logs
+          path: logs-artifacts/
+          retention-days: 5
 
       - name: Check test results
         if: success()
