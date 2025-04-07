@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Development service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: weelink-api
+    restart: unless-stopped
+    ports:
+      - "${PORT_NUMBER:-3001}:3001"
+    volumes:
+      - .:/app
+      - /app/node_modules  # This creates an anonymous volume for node_modules
+    environment:
+      - NODE_ENV=development
+      - PORT_NUMBER=${PORT_NUMBER:-3001}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_CLUSTER=${DB_CLUSTER}
+      - DB_NAME=${DB_NAME}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+    command: npm start
+    networks:
+      - weelink-network
+
+  # Test service - runs tests and exits
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    container_name: weelink-api-test
+    volumes:
+      - .:/app
+      - /app/node_modules  # This creates an anonymous volume for node_modules
+    environment:
+      - NODE_ENV=test
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_CLUSTER=${DB_CLUSTER}
+      - DB_NAME_TEST=${DB_NAME_TEST}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+    command: npm test
+    networks:
+      - weelink-network
+
+networks:
+  weelink-network:
+    driver: bridge

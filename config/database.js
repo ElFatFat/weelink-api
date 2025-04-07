@@ -10,11 +10,9 @@ class Database {
         if(process.env.NODE_ENV !== 'test') {
             this.URI_MONGODB = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.ppbs4ac.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
             logger.info('Using the database ' + process.env.DB_NAME);
-            logger.info('MongoDB URI: ' + this.URI_MONGODB);
         }else {
             this.URI_MONGODB = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.ppbs4ac.mongodb.net/${process.env.DB_NAME_TEST}?retryWrites=true&w=majority`;
             logger.info('Using the test database ' + process.env.DB_NAME_TEST);
-            logger.info('MongoDB URI: ' + this.URI_MONGODB);
         }
     }
 
