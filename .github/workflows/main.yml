@@ -39,8 +39,8 @@ jobs:
 
       - name: Build and run test container
         run: |
-          docker-compose build test
-          docker-compose run --rm test
+          docker compose build test
+          docker compose run --rm test
 
       - name: Create logs directory for artifacts
         if: always()
