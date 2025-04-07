@@ -1,0 +1,57 @@
+name: WeeLink API Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Create env file
+        run: |
+          echo "NODE_ENV=test" > .env
+          echo "PORT_NUMBER=3001" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_CLUSTER=${{ secrets.DB_CLUSTER }}" >> .env
+          echo "DB_NAME_TEST=${{ secrets.DB_NAME_TEST }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_REFRESH_SECRET=${{ secrets.JWT_REFRESH_SECRET }}" >> .env
+
+      - name: Build and run test container
+        run: |
+          docker-compose build test
+          docker-compose run --rm test
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: |
+            coverage/
+            test-report/
+          retention-days: 7
+
+      - name: Check test results
+        if: success()
+        run: echo "All tests have passed successfully!"
